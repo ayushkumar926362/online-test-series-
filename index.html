@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Adda - Online CBT Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    body::before {
+      background: rgba(59, 130, 246, 0.35);
+      top: 5%;
+      left: 10%;
+    }
+    body::after {
+      background: rgba(236, 72, 153, 0.3);
+      bottom: 5%;
+      right: 10%;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      width: 100%;
+      max-width: 600px;
+      border-radius: 20px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.3);
+      padding: 26px;
+      max-height: 92vh;
+      overflow-y: auto;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+    .card-wide {
+      max-width: 960px;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+    .app-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+    }
+
+    .creator-tag {
+      display: inline-block;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #facc15;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .creator-footer {
+      margin-top: 22px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #64748b;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .creator-footer span {
+      color: #2563eb;
+    }
+
+    h1, h2, h3 {
+      color: #1e293b;
+      margin-bottom: 12px;
+      text-align: center;
+      font-weight: 700;
+    }
+    h1 {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 28px;
+    }
+    p {
+      color: #475569;
+      font-size: 14.5px;
+      margin-bottom: 18px;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .input-field {
+      margin-bottom: 14px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      color: #334155;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+      background: #f8fafc;
+    }
+    input:focus, select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 8px;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+    }
+    .btn:active {
+      transform: translateY(0);
+    }
+    .btn-secondary {
+      background: #64748b;
+      box-shadow: none;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+      box-shadow: none;
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+    }
+
+    .social-banner {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px dashed #cbd5e1;
+    }
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .social-btn:hover {
+      transform: translateY(-2px);
+    }
+    .yt-btn {
+      background: linear-gradient(135deg, #ff0000, #cc0000);
+      box-shadow: 0 4px 14px rgba(255, 0, 0, 0.25);
+    }
+    .tg-btn {
+      background: linear-gradient(135deg, #0088cc, #006699);
+      box-shadow: 0 4px 14px rgba(0, 136, 204, 0.25);
+    }
+
+    .link-text {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #64748b;
+      text-align: center;
+    }
+    .link-text span {
+      color: #2563eb;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .screen {
+      display: none;
+    }
+    .active {
+      display: block;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      font-size: 13px;
+      color: #64748b;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+    .timer-badge {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 16px;
+      border: 1px solid #fecaca;
+    }
+    
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+      max-height: 48vh;
+      overflow-y: auto;
+      padding: 4px;
+    }
+    .series-btn {
+      background: #ffffff;
+      border: 1.5px solid #3b82f6;
+      color: #2563eb;
+      padding: 10px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+    }
+    .series-btn:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+    }
+
+    .test-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    @media (min-width: 768px) {
+      .test-layout {
+        flex-direction: row;
+      }
+      .question-section {
+        flex: 1;
+      }
+      .palette-section {
+        width: 280px;
+        border-left: 1px solid #e2e8f0;
+        padding-left: 18px;
+      }
+    }
+
+    .question-box {
+      text-align: left;
+      margin-bottom: 18px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 12px;
+    }
+    .q-en {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 6px;
+      text-align: left;
+    }
+    .q-hi {
+      font-size: 15px;
+      font-weight: 500;
+      color: #475569;
+      text-align: left;
+    }
+
+    .option-btn {
+      background: #f8fafc;
+      color: #1e293b;
+      border: 1.5px solid #e2e8f0;
+      padding: 12px;
+      border-radius: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+      line-height: 1.4;
+      transition: all 0.15s ease;
+    }
+    .option-btn:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .selected {
+      background: #eff6ff !important;
+      border-color: #3b82f6 !important;
+      color: #1d4ed8 !important;
+      font-weight: 600;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 4px;
+      margin-top: 10px;
+    }
+    .pal-num {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 6px 0;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+    .pal-num:hover {
+      border-color: #3b82f6;
+    }
+    .pal-answered {
+      background: #22c55e !important;
+      color: white !important;
+      border-color: #16a34a !important;
+    }
+    .pal-current {
+      outline: 2.5px solid #2563eb;
+    }
+
+    .score-card {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+    .score-item {
+      background: #fff;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    }
+    .analysis-box {
+      text-align: left;
+      margin-top: 15px;
+    }
+    .wrong-card {
+      background: #fff5f5;
+      border: 1px solid #fecaca;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      font-size: 13.5px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card" id="mainContainer">
+
+  <!-- 1. Welcome Screen -->
+  <div id="welcomeScreen" class="screen active">
+    <div class="app-header">
+      <svg class="app-logo" viewBox="0 0 512 512">
+        <rect width="512" height="512" rx="115" fill="#2563eb" />
+        <polygon points="256,90 395,155 256,220 117,155" fill="#ffffff" />
+        <path d="M175,188 L175,245 C175,285 337,285 337,245 L337,188" fill="none" stroke="#ffffff" stroke-width="14" stroke-linecap="round" />
+        <path d="M120,335 C175,305 235,315 256,335 C277,315 337,305 392,335 L392,375 C337,345 277,355 256,375 C235,355 175,345 120,375 Z" fill="#ffffff" opacity="0.95" />
+      </svg>
+      <h1>Students Adda</h1>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="creator-tag">Created by AYUSH</div>
+    </div>
+
+    <p>Target your dream government job with India's best free 100-question CBT mock tests!</p>
+    <button class="btn" onclick="showScreen('loginScreen')">Sign In to Continue</button>
+
+    <div class="social-banner">
+      <a href="http://www.youtube.com/@students_adda_1" target="_blank" class="social-btn yt-btn">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        YouTube Channel
+      </a>
+      <a href="https://t.me/studentquiz1" target="_blank" class="social-btn tg-btn">
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.536-.196 1.006.128.832.922z"/></svg>
+        Telegram Group
+      </a>
+    </div>
+
+    <div class="creator-footer">Portal <span>Created by AYUSH</span></div>
+  </div>
+
+  <!-- 2. Login Screen (Mobile Number Sign In) -->
+  <div id="loginScreen" class="screen">
+    <h2>Student Sign In</h2>
+    <div class="input-field">
+      <label>Mobile Number (Username)</label>
+      <input type="tel" id="loginMobile" placeholder="10-digit mobile number darj karein" maxlength="10">
+    </div>
+    <div class="input-field">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="Enter password">
+    </div>
+    <button class="btn" onclick="loginUser()">Sign In</button>
+    <div class="link-text">
+      New Student? <span onclick="showScreen('signupScreen')">Register with Mobile No (Sign Up)</span>
+    </div>
+    <div class="creator-footer">Created by AYUSH</div>
+  </div>
+
+  <!-- 3. Signup Screen (Mobile Number as Username) -->
+  <div id="signupScreen" class="screen">
+    <h2>Create New Account</h2>
+    <div class="input-field">
+      <label>Full Name</label>
+      <input type="text" id="signupName" placeholder="Enter your full name">
+    </div>
+    <div class="input-field">
+      <label>Mobile Number (Yeh aapka Username banega)</label>
+      <input type="tel" id="signupMobile" placeholder="10-digit mobile number" maxlength="10">
+    </div>
+    <div class="input-field">
+      <label>Password</label>
+      <input type="password" id="signupPassword" placeholder="Set a secure password">
+    </div>
+    <button class="btn" onclick="signupUser()">Register Account</button>
+    <div class="link-text">
+      Already have an account? <span onclick="showScreen('loginScreen')">Sign In</span>
+    </div>
+    <div class="creator-footer">Created by AYUSH</div>
+  </div>
+
+  <!-- 4. Category Screen -->
+  <div id="categoryScreen" class="screen">
+    <div class="top-bar">
+      <div>
+        <span id="userGreeting" style="font-weight:600; color:#1e293b;"></span><br>
+        <span id="userPhoneBadge" style="font-size:11.5px; color:#64748b;"></span>
+      </div>
+      <a href="javascript:void(0)" onclick="logout()" style="color:#ef4444; text-decoration:none; font-weight:600;">Logout</a>
+    </div>
+    <h2>Select Target Examination</h2>
+    <p>Har category me 100 questions (25 Maths + 75 GS) ke 50 mock test sets hain:</p>
+    <div class="input-field">
+      <select id="examCategorySelect">
+        <option value="defence">Indian Army / Defence</option>
+        <option value="ssc">SSC / Railway Exams</option>
+        <option value="bihar_police">Bihar Police / State Police</option>
+        <option value="up_police">UP Police / Constable</option>
+        <option value="teaching">Teaching Exams / CTET</option>
+      </select>
+    </div>
+    <button class="btn" onclick="goToSeriesScreen()">Explore 50 Test Series</button>
+
+    <div class="social-banner">
+      <a href="http://www.youtube.com/@students_adda_1" target="_blank" class="social-btn yt-btn">YouTube</a>
+      <a href="https://t.me/studentquiz1" target="_blank" class="social-btn tg-btn">Join Telegram</a>
+    </div>
+    <div class="creator-footer">Created by AYUSH</div>
+  </div>
+
+  <!-- 5. 50 Test Series Grid Screen -->
+  <div id="seriesScreen" class="screen">
+    <div class="top-bar">
+      <span id="selectedCategoryTitle" style="font-weight:600; color:#2563eb;"></span>
+      <a href="javascript:void(0)" onclick="showScreen('categoryScreen')" style="color:#64748b; text-decoration:none;">Change Exam</a>
+    </div>
+    <h2>Available Test Series (1 to 50)</h2>
+    <p style="margin-bottom: 8px;">Har test series me 25 Maths aur 75 GS ke questions hain:</p>
+    <div class="series-grid" id="seriesGridContainer"></div>
+    <button class="btn btn-secondary" style="margin-top:15px;" onclick="showScreen('categoryScreen')">Back</button>
+    <div class="creator-footer">Created by AYUSH</div>
+  </div>
+
+  <!-- 6. Pre-Test Instructions Screen -->
+  <div id="instructionScreen" class="screen">
+    <h2 id="instructionTestName">Test Series Overview</h2>
+    <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin:18px 0; text-align:left; font-size:14px; line-height:1.7;">
+      <strong>Guidelines & Pattern:</strong><br>
+      • Total Questions: <strong>100 Questions</strong><br>
+      • Breakdown: <strong>25 Mathematics + 75 General Studies (GS/GK)</strong><br>
+      • Time Limit: <strong>60 Minutes (Reverse Timer)</strong><br>
+      • Format: <strong>Bilingual (English + Hindi)</strong><br>
+      • Navigation: Click on question numbers (1-100) on the side palette to jump anytime.<br>
+      • Free PDF & updates on Telegram (<strong>@studentquiz1</strong>)!
+    </div>
+    <button class="btn" style="background:#16a34a; font-size:16px; padding:14px;" onclick="executeStartTest()">Start Test Now</button>
+    <button class="btn btn-secondary" onclick="showScreen('seriesScreen')">Cancel</button>
+    <div class="creator-footer">Created by AYUSH</div>
+  </div>
+
+  <!-- 7. CBT Test Screen (100 Questions, Timer, Palette) -->
+  <div id="testScreen" class="screen">
+    <div class="top-bar">
+      <div>
+        <span id="testBadge" style="font-weight:700; color:#2563eb;"></span><br>
+        <span id="questionCounter" style="font-size:12px; color:#64748b;"></span>
+      </div>
+      <div class="timer-badge" id="timerDisplay">60:00</div>
+    </div>
+
+    <div class="test-layout">
+      <div class="question-section">
+        <div class="question-box">
+          <div class="q-en" id="qTextEn">Question text in English</div>
+          <div class="q-hi" id="qTextHi">प्रश्न हिंदी भाषा में</div>
+        </div>
+
+        <div id="optionsContainer"></div>
+
+        <div style="display:flex; gap:10px; margin-top:15px;">
+          <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">Previous</button>
+          <button class="btn" id="nextBtn" onclick="nextQuestion()">Next</button>
+        </div>
+        <button class="btn btn-danger" style="margin-top:10px;" onclick="confirmSubmit()">Submit Test</button>
+      </div>
+
+      <div class="palette-section">
+        <h4 style="font-size:13px; color:#334155; text-align:center;">Question Palette (1 - 100)</h4>
+        <div style="font-size:11px; text-align:center; margin:4px 0 8px 0; color:#64748b;">
+          <span style="color:#16a34a; font-weight:bold;">● Green</span>: Answered | 
+          <span style="color:#64748b; font-weight:bold;">● Gray</span>: Unattempted
+        </div>
+        <div class="palette-grid" id="paletteGridContainer"></div>
+      </div>
+    </div>
+    <div class="creator-footer">Created by AYUSH</div>
+  </div>
+
+  <!-- 8. Result & Analysis Screen -->
+  <div id="resultScreen" class="screen">
+    <h2>Performance Scoreboard</h2>
+    <div class="score-card">
+      <div class="score-item">Total Questions: <span id="resTotal">100</span></div>
+      <div class="score-item" style="color:#2563eb;">Attempted: <span id="resAttempted">0</span></div>
+      <div class="score-item" style="color:#16a34a;">Correct: <span id="resCorrect">0</span></div>
+      <div class="score-item" style="color:#dc2626;">Incorrect: <span id="resWrong">0</span></div>
+    </div>
+
+    <h3 style="text-align:left; color:#dc2626; font-size:15px; border-bottom:1px solid #e2e8f0; padding-bottom:5px;">Incorrect Questions Detailed Analysis:</h3>
+    <div id="wrongAnalysisList" class="analysis-box"></div>
+
+    <button class="btn" onclick="showScreen('seriesScreen')">Take Another Test</button>
+    <button class="btn btn-secondary" onclick="showScreen('categoryScreen')">Change Target Exam</button>
+
+    <div class="social-banner">
+      <a href="http://www.youtube.com/@students_adda_1" target="_blank" class="social-btn yt-btn">Subscribe @students_adda_1</a>
+      <a href="https://t.me/studentquiz1" target="_blank" class="social-btn tg-btn">Join @studentquiz1</a>
+    </div>
+
+    <div class="creator-footer">Application Developed &amp; <span>Created by AYUSH</span></div>
+  </div>
+
+</div>
+
+<script>
+  let externalJsonData = null;
+
+  async function loadQuestionsFromJSON() {
+    try {
+      const res = await fetch('questions.json');
+      if (res.ok) {
+        externalJsonData = await res.json();
+        console.log("questions.json successfully loaded!");
+      }
+    } catch (e) {
+      console.log("questions.json not found, using internal dynamic bank fallback.");
+    }
+  }
+  loadQuestionsFromJSON();
+
+  // Mobile Number validation helper (10 digits)
+  function isValidMobile(phone) {
+    return /^[6-9]\d{9}$/.test(phone);
+  }
+
+  function signupUser() {
+    const name = document.getElementById('signupName').value.trim();
+    const mobile = document.getElementById('signupMobile').value.trim();
+    const pass = document.getElementById('signupPassword').value.trim();
+
+    if (!name || !mobile || !pass) {
+      alert("Kripya poora naam, mobile number aur password bharein!");
+      return;
+    }
+
+    if (!isValidMobile(mobile)) {
+      alert("Kripya ek valid 10-digit mobile number darj karein!");
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem('sa_users')) || {};
+    if (users[mobile]) {
+      alert("Yeh mobile number pehle se registered hai! Kripya Sign In karein.");
+      showScreen('loginScreen');
+      return;
+    }
+
+    // Mobile number is saved as the unique Username
+    users[mobile] = { name: name, mobile: mobile, password: pass };
+    localStorage.setItem('sa_users', JSON.stringify(users));
+    alert(`Account safal raha! Aapka Username aapka Mobile Number (${mobile}) hai.`);
+    document.getElementById('loginMobile').value = mobile;
+    showScreen('loginScreen');
+  }
+
+  function loginUser() {
+    const mobile = document.getElementById('loginMobile').value.trim();
+    const pass = document.getElementById('loginPassword').value.trim();
+
+    if (!mobile || !pass) {
+      alert("Mobile number aur password darj karein!");
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem('sa_users')) || {};
+    if (users[mobile] && users[mobile].password === pass) {
+      document.getElementById('userGreeting').innerText = `Namaste, ${users[mobile].name}`;
+      document.getElementById('userPhoneBadge').innerText = `User ID: ${users[mobile].mobile}`;
+      showScreen('categoryScreen');
+    } else {
+      alert("Galat Mobile Number ya Password! Dobara prayas karein.");
+    }
+  }
+
+  function logout() {
+    showScreen('loginScreen');
+  }
+
+  // Question Engine
+  function generateFallbackQuestion(catKey, seriesNum, qNum) {
+    if (qNum <= 25) {
+      if (qNum % 4 === 1) {
+        const cp = 120 + (seriesNum * 12 + qNum * 5) % 600;
+        const profit = 5 + (seriesNum + qNum) % 20;
+        const sp = Math.round(cp * (1 + profit / 100));
+        return {
+          en: `An item is bought for Rs. ${cp} and sold at a profit of ${profit}%. What is the selling price?`,
+          hi: `एक वस्तु को रु. ${cp} में खरीदा गया और ${profit}% लाभ पर बेचा गया। विक्रय मूल्य क्या होगा?`,
+          options: [{en: `Rs. ${sp}`, hi: `रु. ${sp}`}, {en: `Rs. ${sp + 12}`, hi: `रु. ${sp + 12}`}, {en: `Rs. ${sp - 15}`, hi: `रु. ${sp - 15}`}, {en: `Rs. ${sp + 25}`, hi: `रु. ${sp + 25}`}],
+          correct: 0
+        };
+      } else if (qNum % 4 === 2) {
+        const s = 35 + (seriesNum * 2 + qNum) % 50;
+        const t = 2 + (seriesNum + qNum) % 4;
+        const d = s * t;
+        return {
+          en: `A car travels at ${s} km/h for ${t} hours. What is the total distance covered?`,
+          hi: `एक कार ${s} किमी/घंटा की गति से ${t} घंटे चलती है। तय की गई कुल दूरी ज्ञात करें?`,
+          options: [{en: `${d + 10} km`, hi: `${d + 10} किमी`}, {en: `${d} km`, hi: `${d} किमी`}, {en: `${d - 15} km`, hi: `${d - 15} किमी`}, {en: `${d + 20} km`, hi: `${d + 20} किमी`}],
+          correct: 1
+        };
+      } else if (qNum % 4 === 3) {
+        const p = 1200 + (seriesNum * 40 + qNum * 80);
+        const r = 5 + (seriesNum % 5);
+        const t = 2 + (qNum % 3);
+        const si = (p * r * t) / 100;
+        return {
+          en: `Find the Simple Interest on Rs. ${p} at ${r}% per annum for ${t} years.`,
+          hi: `रु. ${p} पर ${r}% वार्षिक दर से ${t} वर्ष का साधारण ब्याज ज्ञात करें।`,
+          options: [{en: `Rs. ${si - 10}`, hi: `रु. ${si - 10}`}, {en: `Rs. ${si + 20}`, hi: `रु. ${si + 20}`}, {en: `Rs. ${si}`, hi: `रु. ${si}`}, {en: `Rs. ${si + 50}`, hi: `रु. ${si + 50}`}],
+          correct: 2
+        };
+      } else {
+        const a = (seriesNum + 1) * 4;
+        const b = (seriesNum + 1) * 7;
+        const sum = a + b;
+        return {
+          en: `Two numbers are in ratio 4:7 and their sum is ${sum}. Find the larger number.`,
+          hi: `दो संख्याएँ 4:7 के अनुपात में हैं और उनका योग ${sum} है। बड़ी संख्या क्या होगी?`,
+          options: [{en: `${a}`, hi: `${a}`}, {en: `${b + 2}`, hi: `${b + 2}`}, {en: `${b - 3}`, hi: `${b - 3}`}, {en: `${b}`, hi: `${b}`}],
+          correct: 3
+        };
+      }
+    }
+
+    const gsQuestionBank = [
+      { en: "Where is the Indian Military Academy located?", hi: "भारतीय सैन्य अकादमी कहाँ स्थित है?", opts: [{en:"Dehradun", hi:"देहरादून"}, {en:"Pune", hi:"पुणे"}, {en:"New Delhi", hi:"नई दिल्ली"}, {en:"Kolkata", hi:"कोलकाता"}], c: 0 },
+      { en: "Who composed the National Anthem of India?", hi: "भारत का राष्ट्रगान किसने लिखा था?", opts: [{en:"Rabindranath Tagore", hi:"रवींद्रनाथ टैगोर"}, {en:"Bankim Chandra", hi:"बंकिम चंद्र"}, {en:"Sarojini Naidu", hi:"सरोजिनी नायडू"}, {en:"Mahatma Gandhi", hi:"महात्मा गांधी"}], c: 0 },
+      { en: "From which place did the Revolt of 1857 begin?", hi: "1857 की क्रांति की शुरुआत कहाँ से हुई थी?", opts: [{en:"Meerut", hi:"मेरठ"}, {en:"Jhansi", hi:"झांसी"}, {en:"Patna", hi:"पटना"}, {en:"Delhi", hi:"दिल्ली"}], c: 0 },
+      { en: "Which was the major port city of Indus Valley Civilization?", hi: "सिंधु घाटी सभ्यता का प्रमुख बंदरगाह कौन सा था?", opts: [{en:"Lothal", hi:"लोथल"}, {en:"Kalibangan", hi:"कालीबंगन"}, {en:"Harappa", hi:"हड़प्पा"}, {en:"Ropar", hi:"रोपड़"}], c: 0 },
+      { en: "Which Article of the Constitution guarantees Right to Equality?", hi: "संविधान का कौन सा अनुच्छेद समानता का अधिकार देता है?", opts: [{en:"Article 14", hi:"अनुच्छेद 14"}, {en:"Article 19", hi:"अनुच्छेद 19"}, {en:"Article 21", hi:"अनुच्छेद 21"}, {en:"Article 32", hi:"अनुच्छेद 32"}], c: 0 },
+      { en: "What is the chemical formula of common salt?", hi: "साधारण नमक का रासायनिक सूत्र क्या है?", opts: [{en:"NaCl", hi:"NaCl"}, {en:"H2O", hi:"H2O"}, {en:"CO2", hi:"CO2"}, {en:"KCl", hi:"KCl"}], c: 0 },
+      { en: "Which organ produces bile juice in the human body?", hi: "मानव शरीर में पित्त रस कौन सा अंग बनाता है?", opts: [{en:"Liver", hi:"यकृत (Liver)"}, {en:"Kidney", hi:"वृक्क"}, {en:"Pancreas", hi:"अग्न्याशय"}, {en:"Heart", hi:"हृदय"}], c: 0 },
+      { en: "Who was the first President of independent India?", hi: "स्वतंत्र भारत के प्रथम राष्ट्रपति कौन थे?", opts: [{en:"Dr. Rajendra Prasad", hi:"डॉ. राजेंद्र प्रसाद"}, {en:"Dr. Radhakrishnan", hi:"डॉ. राधाकृष्णन"}, {en:"Pt. Nehru", hi:"पं. नेहरू"}, {en:"Sardar Patel", hi:"सरदार पटेल"}], c: 0 },
+      { en: "In which year did the Champaran Satyagraha occur in Bihar?", hi: "बिहार में चंपारण सत्याग्रह किस वर्ष हुआ था?", opts: [{en:"1917", hi:"1917"}, {en:"1919", hi:"1919"}, {en:"1920", hi:"1920"}, {en:"1922", hi:"1922"}], c: 0 },
+      { en: "Where is Dudhwa National Park located?", hi: "दुधवा राष्ट्रीय उद्यान कहाँ स्थित है?", opts: [{en:"Lakhimpur Kheri (UP)", hi:"लखीमपुर खीरी (उ.प्र.)"}, {en:"Kanpur", hi:"कानपुर"}, {en:"Prayagraj", hi:"प्रयागराज"}, {en:"Meerut", hi:"मेरठ"}], c: 0 }
+    ];
+
+    const pick = gsQuestionBank[(qNum + seriesNum * 3) % gsQuestionBank.length];
+    return {
+      en: `${pick.en}`,
+      hi: `${pick.hi}`,
+      options: pick.opts,
+      correct: pick.c
+    };
+  }
+
+  function applyShift(qObj, seriesNum, qNum) {
+    const shift = (seriesNum + qNum) % 4;
+    const shifted = [];
+    for (let i = 0; i < 4; i++) {
+      shifted.push(qObj.options[(i + shift) % 4]);
+    }
+    return {
+      num: qNum,
+      en: qObj.en,
+      hi: qObj.hi,
+      options: shifted,
+      correct: (qObj.correct - shift + 4) % 4
+    };
+  }
+
+  function get100Questions(catKey, seriesNum) {
+    const questions = [];
+    const seriesKey = `series_${seriesNum}`;
+
+    if (externalJsonData && externalJsonData[catKey] && externalJsonData[catKey][seriesKey]) {
+      const fromJson = externalJsonData[catKey][seriesKey];
+      if (fromJson.length === 100) {
+        return fromJson;
+      }
+    }
+
+    for (let i = 1; i <= 100; i++) {
+      const raw = generateFallbackQuestion(catKey, seriesNum, i);
+      questions.push(applyShift(raw, seriesNum, i));
+    }
+    return questions;
+  }
+
+  let selectedCategoryKey = "defence";
+  let selectedCategoryLabel = "Indian Army / Defence";
+  let currentSeriesNum = 1;
+  let testQuestions = [];
+  let userResponses = {};
+  let currentIndex = 0;
+  let timerInterval = null;
+  let timeLeftSeconds = 3600;
+
+  function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+
+    const container = document.getElementById('mainContainer');
+    if (screenId === 'testScreen') {
+      container.classList.add('card-wide');
+    } else {
+      container.classList.remove('card-wide');
+    }
+  }
+
+  function goToSeriesScreen() {
+    const selectElem = document.getElementById('examCategorySelect');
+    selectedCategoryKey = selectElem.value;
+    selectedCategoryLabel = selectElem.options[selectElem.selectedIndex].text;
+    document.getElementById('selectedCategoryTitle').innerText = selectedCategoryLabel;
+
+    const container = document.getElementById('seriesGridContainer');
+    container.innerHTML = "";
+
+    for (let i = 1; i <= 50; i++) {
+      const btn = document.createElement('button');
+      btn.className = "series-btn";
+      btn.innerHTML = `Test Series ${i}<br><span style="font-size:11px; color:#64748b;">25 Math + 75 GS</span>`;
+      btn.onclick = () => openInstructionModal(i);
+      container.appendChild(btn);
+    }
+
+    showScreen('seriesScreen');
+  }
+
+  function openInstructionModal(seriesNum) {
+    currentSeriesNum = seriesNum;
+    document.getElementById('instructionTestName').innerText = `${selectedCategoryLabel} - Test Series ${seriesNum}`;
+    showScreen('instructionScreen');
+  }
+
+  function executeStartTest() {
+    testQuestions = get100Questions(selectedCategoryKey, currentSeriesNum);
+    userResponses = {};
+    currentIndex = 0;
+    timeLeftSeconds = 60 * 60;
+
+    document.getElementById('testBadge').innerText = `${selectedCategoryLabel} | Series ${currentSeriesNum}`;
+    buildPalette();
+    showScreen('testScreen');
+    loadQuestion();
+    startTimer();
+  }
+
+  function startTimer() {
+    clearInterval(timerInterval);
+    updateTimerDisplay();
+
+    timerInterval = setInterval(() => {
+      timeLeftSeconds--;
+      updateTimerDisplay();
+
+      if (timeLeftSeconds <= 0) {
+        clearInterval(timerInterval);
+        alert("Time is up! Submitting your test automatically.");
+        submitAndAnalyze();
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeftSeconds / 60);
+    const seconds = timeLeftSeconds % 60;
+    const pad = n => (n < 10 ? '0' : '') + n;
+    document.getElementById('timerDisplay').innerText = `${pad(minutes)}:${pad(seconds)}`;
+  }
+
+  function buildPalette() {
+    const paletteContainer = document.getElementById('paletteGridContainer');
+    paletteContainer.innerHTML = "";
+
+    for (let i = 0; i < 100; i++) {
+      const cell = document.createElement('div');
+      cell.className = "pal-num";
+      cell.id = `pal-${i}`;
+      cell.innerText = i + 1;
+      cell.onclick = () => jumpToQuestion(i);
+      paletteContainer.appendChild(cell);
+    }
+  }
+
+  function jumpToQuestion(index) {
+    currentIndex = index;
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const q = testQuestions[currentIndex];
+    const sectionName = (currentIndex < 25) ? "Section: Mathematics" : "Section: General Studies (GS/GK)";
+    document.getElementById('questionCounter').innerText = `${sectionName} | Q ${currentIndex + 1} of 100`;
+    document.getElementById('qTextEn').innerText = `${currentIndex + 1}. ${q.en}`;
+    document.getElementById('qTextHi').innerText = `प्र. ${currentIndex + 1}. ${q.hi}`;
+
+    const optBox = document.getElementById('optionsContainer');
+    optBox.innerHTML = "";
+
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.innerHTML = `<strong>(${String.fromCharCode(65 + idx)})</strong> ${opt.en} / ${opt.hi}`;
+
+      if (userResponses[currentIndex] === idx) {
+        btn.classList.add('selected');
+      }
+
+      btn.onclick = () => {
+        userResponses[currentIndex] = idx;
+        document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        updatePaletteItem(currentIndex);
+      };
+      optBox.appendChild(btn);
+    });
+
+    document.querySelectorAll('.pal-num').forEach(p => p.classList.remove('pal-current'));
+    const currentCell = document.getElementById(`pal-${currentIndex}`);
+    if (currentCell) {
+      currentCell.classList.add('pal-current');
+      currentCell.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    document.getElementById('prevBtn').style.visibility = (currentIndex === 0) ? 'hidden' : 'visible';
+    document.getElementById('nextBtn').innerText = (currentIndex === 99) ? "Go to 1st Question" : "Next";
+  }
+
+  function updatePaletteItem(index) {
+    const cell = document.getElementById(`pal-${index}`);
+    if (userResponses[index] !== undefined) {
+      cell.classList.add('pal-answered');
+    }
+  }
+
+  function nextQuestion() {
+    if (currentIndex < 99) {
+      currentIndex++;
+    } else {
+      currentIndex = 0;
+    }
+    loadQuestion();
+  }
+
+  function prevQuestion() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      loadQuestion();
+    }
+  }
+
+  function confirmSubmit() {
+    const attemptedCount = Object.keys(userResponses).length;
+    if (confirm(`You have attempted ${attemptedCount} out of 100 questions. Do you want to submit?`)) {
+      clearInterval(timerInterval);
+      submitAndAnalyze();
+    }
+  }
+
+  function submitAndAnalyze() {
+    clearInterval(timerInterval);
+
+    let correctCount = 0;
+    let wrongList = [];
+
+    testQuestions.forEach((q, idx) => {
+      const selected = userResponses[idx];
+      if (selected !== undefined) {
+        if (selected === q.correct) {
+          correctCount++;
+        } else {
+          wrongList.push({
+            num: idx + 1,
+            qEn: q.en,
+            qHi: q.hi,
+            chosen: `${q.options[selected].en} / ${q.options[selected].hi}`,
+            correct: `${q.options[q.correct].en} / ${q.options[q.correct].hi}`
+          });
+        }
+      }
+    });
+
+    const attemptedCount = Object.keys(userResponses).length;
+    const wrongCount = attemptedCount - correctCount;
+
+    document.getElementById('resTotal').innerText = 100;
+    document.getElementById('resAttempted').innerText = attemptedCount;
+    document.getElementById('resCorrect').innerText = correctCount;
+    document.getElementById('resWrong').innerText = wrongCount;
+
+    const analysisBox = document.getElementById('wrongAnalysisList');
+    analysisBox.innerHTML = "";
+
+    if (wrongList.length === 0) {
+      analysisBox.innerHTML = `<p style="color:#16a34a; font-weight:600; text-align:center;">Great job! No mistakes in your attempted questions.</p>`;
+    } else {
+      wrongList.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'wrong-card';
+        div.innerHTML = `
+          <strong>Q${item.num}. ${item.qEn}</strong><br>
+          <em style="color:#475569;">${item.qHi}</em><br>
+          <span style="color:#dc2626; display:block; margin-top:4px;">❌ Your Choice: ${item.chosen}</span>
+          <span style="color:#16a34a; font-weight:600; display:block;">✔️ Correct Choice: ${item.correct}</span>
+        `;
+        analysisBox.appendChild(div);
+      });
+    }
+
+    showScreen('resultScreen');
+  }
+</script>
+
+</body>
+</html>
