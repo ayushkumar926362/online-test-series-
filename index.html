@@ -133,7 +133,7 @@
       font-weight: 600;
       margin-bottom: 6px;
     }
-    input, select {
+    input {
       width: 100%;
       padding: 12px;
       border: 1.5px solid #cbd5e1;
@@ -143,9 +143,74 @@
       transition: border 0.2s, box-shadow 0.2s;
       background: #f8fafc;
     }
-    input:focus, select:focus {
+    input:focus {
       border-color: #3b82f6;
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* 1-Click Interactive Exam Selection Cards */
+    .exam-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .exam-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+    .exam-card:hover {
+      border-color: #3b82f6;
+      background: #eff6ff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+    }
+    .exam-card:active {
+      transform: translateY(0);
+    }
+    .exam-card-content {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .exam-icon {
+      font-size: 26px;
+      min-width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .exam-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .exam-desc {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .exam-arrow {
+      font-size: 18px;
+      color: #94a3b8;
+      font-weight: bold;
+      transition: transform 0.2s;
+    }
+    .exam-card:hover .exam-arrow {
+      color: #2563eb;
+      transform: translateX(4px);
     }
 
     .btn {
@@ -165,9 +230,6 @@
     .btn:hover {
       transform: translateY(-1px);
       box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
-    }
-    .btn:active {
-      transform: translateY(0);
     }
     .btn-secondary {
       background: #64748b;
@@ -435,7 +497,7 @@
       <div class="creator-tag">Created by AYUSH</div>
     </div>
 
-    <p>Target your dream government job with 100-question CBT mock tests (25 Reasoning + 75 GS/GK)!</p>
+    <p>Target your dream government job with India's best free 100-question GK/GS CBT mock tests!</p>
     <button class="btn" onclick="showScreen('loginScreen')">Sign In to Continue</button>
 
     <div class="social-banner">
@@ -518,7 +580,7 @@
     <div class="creator-footer">Created by AYUSH</div>
   </div>
 
-  <!-- 4. Category Screen -->
+  <!-- 4. Category Screen (4 Core Government Job Categories - 1 Click) -->
   <div id="categoryScreen" class="screen">
     <div class="top-bar">
       <div>
@@ -527,18 +589,54 @@
       </div>
       <a href="javascript:void(0)" onclick="logout()" style="color:#ef4444; text-decoration:none; font-weight:600;">Logout</a>
     </div>
-    <h2>Select Target Examination</h2>
-    <p>Har category me 100 questions (25 Reasoning + 75 General Studies) ke 50 mock test sets hain:</p>
-    <div class="input-field">
-      <select id="examCategorySelect">
-        <option value="defence">Indian Army / Defence</option>
-        <option value="ssc">SSC / Railway Exams</option>
-        <option value="bihar_police">Bihar Police / State Police</option>
-        <option value="up_police">UP Police / Constable</option>
-        <option value="teaching">Teaching Exams / CTET</option>
-      </select>
+    <h2>Choose Target Exam</h2>
+    <p>Apna exam chunein aur direct 50 test sets shuru karein:</p>
+
+    <div class="exam-grid">
+      <div class="exam-card" onclick="openExamDirect('defence', 'Indian Army / Defence')">
+        <div class="exam-card-content">
+          <div class="exam-icon">🪖</div>
+          <div>
+            <div class="exam-title">Indian Army / Defence</div>
+            <div class="exam-desc">Agniveer, GD, Clerk, Tradesman &amp; Technical</div>
+          </div>
+        </div>
+        <div class="exam-arrow">➔</div>
+      </div>
+
+      <div class="exam-card" onclick="openExamDirect('ssc', 'SSC &amp; Railway Exams')">
+        <div class="exam-card-content">
+          <div class="exam-icon">🚆</div>
+          <div>
+            <div class="exam-title">SSC &amp; Railway Exams</div>
+            <div class="exam-desc">SSC GD, CHSL, MTS, RPF, RRB Group D &amp; ALP</div>
+          </div>
+        </div>
+        <div class="exam-arrow">➔</div>
+      </div>
+
+      <div class="exam-card" onclick="openExamDirect('bihar_police', 'Bihar Police &amp; Daroga')">
+        <div class="exam-card-content">
+          <div class="exam-icon">👮</div>
+          <div>
+            <div class="exam-title">Bihar Police &amp; Daroga</div>
+            <div class="exam-desc">Constable, SI, CSBC &amp; BSSC Inter Level Special</div>
+          </div>
+        </div>
+        <div class="exam-arrow">➔</div>
+      </div>
+
+      <div class="exam-card" onclick="openExamDirect('up_police', 'UP Police / Constable')">
+        <div class="exam-card-content">
+          <div class="exam-icon">🚨</div>
+          <div>
+            <div class="exam-title">UP Police / Constable</div>
+            <div class="exam-desc">UPP Constable, Radio Operator &amp; UPSI Special</div>
+          </div>
+        </div>
+        <div class="exam-arrow">➔</div>
+      </div>
     </div>
-    <button class="btn" onclick="goToSeriesScreen()">Explore 50 Test Series</button>
 
     <div class="social-banner">
       <a href="http://www.youtube.com/@students_adda_1" target="_blank" class="social-btn yt-btn">YouTube</a>
@@ -554,7 +652,7 @@
       <a href="javascript:void(0)" onclick="showScreen('categoryScreen')" style="color:#64748b; text-decoration:none;">Change Exam</a>
     </div>
     <h2>Available Test Series (1 to 50)</h2>
-    <p style="margin-bottom: 8px;">25 Reasoning + 75 GS Questions:</p>
+    <p style="margin-bottom: 8px;">Har test series me 100 unique GK &amp; GS questions hain:</p>
     <div class="series-grid" id="seriesGridContainer"></div>
     <button class="btn btn-secondary" style="margin-top:15px;" onclick="showScreen('categoryScreen')">Back</button>
     <div class="creator-footer">Created by AYUSH</div>
@@ -564,12 +662,11 @@
   <div id="instructionScreen" class="screen">
     <h2 id="instructionTestName">Test Series Overview</h2>
     <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin:18px 0; text-align:left; font-size:14px; line-height:1.7;">
-      <strong>Guidelines & Pattern:</strong><br>
-      • Total Questions: <strong>100 Questions</strong><br>
-      • Structure: <strong>25 Reasoning (तर्कशक्ति) + 75 General Studies (GS/GK)</strong><br>
+      <strong>Guidelines &amp; Pattern:</strong><br>
+      • Total Questions: <strong>100 Questions (General Studies &amp; GK)</strong><br>
       • Time Limit: <strong>60 Minutes (Reverse Timer)</strong><br>
       • Format: <strong>Bilingual / Hindi</strong><br>
-      • Navigation: Click on question numbers (1-100) on the palette to jump anytime.<br>
+      • Navigation: Click on question numbers (1-100) on the side palette to jump anytime.<br>
       • Free updates on Telegram (<strong>@studentquiz1</strong>)!
     </div>
     <button class="btn" style="background:#16a34a; font-size:16px; padding:14px;" onclick="executeStartTest()">Start Test Now</button>
@@ -577,7 +674,7 @@
     <div class="creator-footer">Created by AYUSH</div>
   </div>
 
-  <!-- 7. CBT Test Screen (100 Questions, Timer, Palette) -->
+  <!-- 7. CBT Test Screen -->
   <div id="testScreen" class="screen">
     <div class="top-bar">
       <div>
@@ -645,14 +742,25 @@
   let externalJsonData = null;
 
   async function loadQuestionsFromJSON() {
-    try {
-      const res = await fetch('questions.json');
-      if (res.ok) {
-        externalJsonData = await res.json();
-        console.log("questions.json successfully loaded!");
+    const possiblePaths = [
+      'questions.json',
+      'question.json',
+      'questions.jeson',
+      'question.jeson',
+      'question .jeson'
+    ];
+
+    for (const path of possiblePaths) {
+      try {
+        const res = await fetch(path);
+        if (res.ok) {
+          externalJsonData = await res.json();
+          console.log(`Successfully loaded question bank from: ${path}`);
+          return;
+        }
+      } catch (e) {
+        // continue trying
       }
-    } catch (e) {
-      console.log("questions.json not found, using internal dynamic bank fallback.");
     }
   }
   loadQuestionsFromJSON();
@@ -709,7 +817,6 @@
     }
   }
 
-  // RESET / FORGOT PASSWORD LOGIC
   function resetUserPassword() {
     const mobile = document.getElementById('resetMobile').value.trim();
     const name = document.getElementById('resetName').value.trim();
@@ -739,6 +846,16 @@
 
   function logout() {
     showScreen('loginScreen');
+  }
+
+  let selectedCategoryKey = "defence";
+  let selectedCategoryLabel = "Indian Army / Defence";
+
+  // Direct 1-Click to 50 Series Screen
+  function openExamDirect(catKey, catLabel) {
+    selectedCategoryKey = catKey;
+    selectedCategoryLabel = catLabel;
+    goToSeriesScreen();
   }
 
   function normalizeRawQuestion(raw, idx) {
@@ -778,125 +895,73 @@
     };
   }
 
-  function generateReasoningQuestion(seriesNum, qNum) {
-    const subType = qNum % 5;
-
-    if (subType === 0) {
-      const step = 3 + (seriesNum % 5);
-      const start = 4 + (qNum * 2) + (seriesNum % 10);
-      const n1 = start;
-      const n2 = start + step;
-      const n3 = start + (step * 2);
-      const ans = start + (step * 3);
-      return {
-        en: `Complete the number series: ${n1}, ${n2}, ${n3}, ?`,
-        hi: `दी गई संख्या श्रृंखला को पूरा करें: ${n1}, ${n2}, ${n3}, ?`,
-        options: [
-          { en: `${ans}`, hi: `${ans}` },
-          { en: `${ans + 2}`, hi: `${ans + 2}` },
-          { en: `${ans - 3}`, hi: `${ans - 3}` },
-          { en: `${ans + 5}`, hi: `${ans + 5}` }
-        ],
-        correct: 0
-      };
-    }
-
-    if (subType === 1) {
-      const analogies = [
-        { en: "India : New Delhi :: Japan : ?", hi: "भारत : नई दिल्ली :: जापान : ?", opts: ["Tokyo / टोक्यो", "Beijing / बीजिंग", "Seoul / सियोल", "Bangkok / बैंकॉक"] },
-        { en: "Doctor : Hospital :: Teacher : ?", hi: "चिकित्सक : अस्पताल :: शिक्षक : ?", opts: ["School / विद्यालय", "Court / न्यायालय", "Field / मैदान", "Office / कार्यालय"] },
-        { en: "Bird : Fly :: Fish : ?", hi: "पक्षी : उड़ना :: मछली : ?", opts: ["Swim / तैरना", "Run / दौड़ना", "Walk / चलना", "Crawl / रेंगना"] },
-        { en: "Cow : Calf :: Horse : ?", hi: "गाय : बछड़ा :: घोड़ा : ?", opts: ["Colt / बछेड़ा", "Puppy / पिल्ला", "Cub / शावक", "Kitten / बिलौटा"] }
-      ];
-      const a = analogies[(seriesNum + qNum) % analogies.length];
-      return {
-        en: `Find the related word: ${a.en}`,
-        hi: `संबंधित शब्द का चयन करें: ${a.hi}`,
-        options: a.opts.map(o => ({ en: o, hi: o })),
-        correct: 0
-      };
-    }
-
-    if (subType === 2) {
-      const oddSets = [
-        { en: "Find the odd one out", hi: "निम्नलिखित में से विषम शब्द का चयन करें:", opts: ["Car / कार", "Ship / जहाज", "Boat / नाव", "Submarine / पनडुब्बी"] },
-        { en: "Find the odd one out", hi: "निम्नलिखित में से विषम शब्द का चयन करें:", opts: ["Mango / आम", "Potato / आलू", "Carrot / गाजर", "Radish / मूली"] },
-        { en: "Find the odd one out", hi: "निम्नलिखित में से विषम शब्द का चयन करें:", opts: ["Iron / लोहा", "Plastic / प्लास्टिक", "Wood / लकड़ी", "Paper / कागज"] }
-      ];
-      const o = oddSets[(seriesNum + qNum) % oddSets.length];
-      return {
-        en: o.en,
-        hi: o.hi,
-        options: o.opts.map(opt => ({ en: opt, hi: opt })),
-        correct: 0
-      };
-    }
-
-    if (subType === 3) {
-      const dist1 = 5 + (seriesNum % 5);
-      const dist2 = 12 + (qNum % 3);
-      return {
-        en: `A person walks ${dist1} km North, turns right and walks ${dist2} km. In which direction is he now from the starting point?`,
-        hi: `एक व्यक्ति ${dist1} किमी उत्तर दिशा में जाता है, फिर दाएं मुड़कर ${dist2} किमी चलता है। वह प्रारंभिक बिंदु से किस दिशा में है?`,
-        options: [
-          { en: "North-East", hi: "उत्तर-पूर्व (North-East)" },
-          { en: "North-West", hi: "उत्तर-पश्चिम" },
-          { en: "South-East", hi: "दक्षिण-पूर्व" },
-          { en: "South-West", hi: "दक्षिण-पश्चिम" }
-        ],
-        correct: 0
-      };
-    }
-
-    const codes = [
-      { en: "If CAT is coded as DBU, then DOG will be coded as:", hi: "यदि CAT का कूट DBU है, तो DOG का कूट क्या होगा?", opts: ["EPH", "FQI", "DPH", "ENG"] },
-      { en: "If PEN is coded as QFO, then BOOK will be coded as:", hi: "यदि PEN का कूट QFO है, तो BOOK का कूट क्या होगा?", opts: ["CPPL", "BOPL", "CQQL", "DPPL"] },
-      { en: "If SUN is coded as TVO, then MOON will be coded as:", hi: "यदि SUN का कूट TVO है, तो MOON का कूट क्या होगा?", opts: ["NPPO", "NOPO", "MPPO", "OQQP"] }
+  function generateNonRepeatingGS(qNum, seriesNum) {
+    const constitutionArticles = [
+      { art: "14", topic: "समानता का अधिकार (Right to Equality)", wrong: ["19", "21", "32"] },
+      { art: "17", topic: "अस्पृश्यता का अंत (Abolition of Untouchability)", wrong: ["18", "19", "23"] },
+      { art: "21", topic: "प्राण एवं दैहिक स्वतंत्रता (Right to Life)", wrong: ["14", "19", "25"] },
+      { art: "24", topic: "कारखानों में बाल श्रम निषेध", wrong: ["21", "23", "29"] },
+      { art: "32", topic: "संवैधानिक उपचारों का अधिकार", wrong: ["30", "44", "226"] },
+      { art: "40", topic: "ग्राम पंचायतों का गठन", wrong: ["44", "48", "50"] },
+      { art: "44", topic: "समान नागरिक संहिता (Uniform Civil Code)", wrong: ["39", "45", "51"] },
+      { art: "52", topic: "भारत का राष्ट्रपति", wrong: ["63", "72", "76"] },
+      { art: "61", topic: "राष्ट्रपति पर महाभियोग", wrong: ["54", "72", "123"] },
+      { art: "76", topic: "भारत का महान्यायवादी (Attorney General)", wrong: ["148", "165", "280"] },
+      { art: "110", topic: "धन विधेयक की परिभाषा", wrong: ["108", "112", "117"] },
+      { art: "148", topic: "नियंत्रक एवं महालेखापरीक्षक (CAG)", wrong: ["76", "280", "315"] },
+      { art: "324", topic: "निर्वाचन आयोग (Election Commission)", wrong: ["315", "352", "370"] },
+      { art: "352", topic: "राष्ट्रीय आपातकाल (National Emergency)", wrong: ["356", "360", "368"] },
+      { art: "368", topic: "संविधान संशोधन प्रक्रिया", wrong: ["352", "360", "370"] }
     ];
-    const c = codes[(seriesNum + qNum) % codes.length];
+
+    const scienceInventions = [
+      { what: "विद्युत बल्ब", who: "थॉमस अल्वा एडिसन", wrong: ["ग्राहम बेल", "माइकल फैराडे", "न्यूटन"] },
+      { what: "टेलीफोन", who: "अलेक्जेंडर ग्राहम बेल", wrong: ["एडिसन", "मारकोनी", "जेम्स वाट"] },
+      { what: "पेनिसिलिन", who: "अलेक्जेंडर फ्लेमिंग", wrong: ["एडवर्ड जेनर", "लुई पाश्चर", "रॉबर्ट कोच"] },
+      { what: "चेचक का टीका", who: "एडवर्ड जेनर", wrong: ["लुई पाश्चर", "फ्लेमिंग", "जोनास साल्क"] },
+      { what: "एक्स-रे किरणें", who: "डब्ल्यू. सी. रोएंटजन", wrong: ["हेनरी बेकरल", "मैडम क्यूरी", "रदरफोर्ड"] },
+      { what: "रक्त परिसंचरण", who: "विलियम हार्वे", wrong: ["कार्ल लैंडस्टीनर", "रॉबर्ट हुक", "अरस्तू"] },
+      { what: "रक्त समूह (Blood Group)", who: "कार्ल लैंडस्टीनर", wrong: ["विलियम हार्वे", "मेंडल", "डार्विन"] },
+      { what: "इलेक्ट्रॉन", who: "जे. जे. थॉमसन", wrong: ["गोल्डस्टीन", "चैडविक", "रदरफोर्ड"] },
+      { what: "न्यूट्रॉन", who: "जेम्स चैडविक", wrong: ["थॉमसन", "रदरफोर्ड", "डाल्टन"] },
+      { what: "भाप का इंजन", who: "जेम्स वाट", wrong: ["स्टीफेंसन", "न्यूटन", "फैराडे"] }
+    ];
+
+    const staticBank = [
+      { q: "विश्व की सबसे ऊंची पर्वत चोटी कौन सी है?", a: "माउंट एवरेस्ट", w: ["के-2 (गॉडविन ऑस्टिन)", "कंचनजंगा", "मकालू"] },
+      { q: "भारत की सबसे पुरानी पर्वत श्रृंखला कौन सी है?", a: "अरावली पर्वतमाला", w: ["हिमालय", "सतपुड़ा", "पश्चिमी घाट"] },
+      { q: "मानव शरीर की सबसे छोटी हड्डी कौन सी है?", a: "स्टेप्स (कान में)", w: ["फीमर", "टिबिया", "रेडियस"] },
+      { q: "मानव शरीर की सबसे बड़ी हड्डी कौन सी है?", a: "फीमर (जांघ में)", w: ["स्टेप्स", "ह्यूमरस", "फिबुला"] },
+      { q: "सूर्य के सबसे नजदीक स्थित ग्रह कौन सा है?", a: "बुध (Mercury)", w: ["शुक्र", "मंगल", "पृथ्वी"] },
+      { q: "सौरमंडल का सबसे चमकीला ग्रह कौन सा है?", a: "शुक्र (Venus)", w: ["बुध", "बृहस्पति", "मंगल"] },
+      { q: "गांधीजी ने दांडी मार्च किस वर्ष प्रारंभ किया था?", a: "1930 में", w: ["1920 में", "1922 में", "1942 में"] },
+      { q: "जलियांवाला बाग हत्याकांड कब हुआ था?", a: "13 अप्रैल 1919", w: ["13 मार्च 1919", "15 अगस्त 1920", "23 मार्च 1931"] }
+    ];
+
+    if (qNum <= 15) {
+      const item = constitutionArticles[(qNum - 1) % constitutionArticles.length];
+      return {
+        hi: `भारतीय संविधान के किस अनुच्छेद में '${item.topic}' का प्रावधान है?`,
+        en: `Under which Article is '${item.topic}' provided?`,
+        options: [{en:`अनुच्छेद ${item.art}`, hi:`अनुच्छेद ${item.art}`}, {en:`अनुच्छेद ${item.wrong[0]}`, hi:`अनुच्छेद ${item.wrong[0]}`}, {en:`अनुच्छेद ${item.wrong[1]}`, hi:`अनुच्छेद ${item.wrong[1]}`}, {en:`अनुच्छेद ${item.wrong[2]}`, hi:`अनुच्छेद ${item.wrong[2]}`}],
+        correct: 0
+      };
+    } else if (qNum <= 25) {
+      const item = scienceInventions[(qNum - 16) % scienceInventions.length];
+      return {
+        hi: `'${item.what}' का आविष्कार किसने किया था?`,
+        en: `Who invented '${item.what}'?`,
+        options: [{en:item.who, hi:item.who}, {en:item.wrong[0], hi:item.wrong[0]}, {en:item.wrong[1], hi:item.wrong[1]}, {en:item.wrong[2], hi:item.wrong[2]}],
+        correct: 0
+      };
+    }
+
+    const pick = staticBank[(qNum - 26) % staticBank.length];
     return {
-      en: c.en,
-      hi: c.hi,
-      options: c.opts.map(opt => ({ en: opt, hi: opt })),
+      hi: pick.q,
+      en: pick.q,
+      options: [{en:pick.a, hi:pick.a}, {en:pick.w[0], hi:pick.w[0]}, {en:pick.w[1], hi:pick.w[1]}, {en:pick.w[2], hi:pick.w[2]}],
       correct: 0
-    };
-  }
-
-  const masterGSBank = [
-    { en: "In which year was the Harappan Civilization discovered?", hi: "हड़प्पा सभ्यता की खोज किस वर्ष हुई थी?", opts: [{en:"1920", hi:"1920"}, {en:"1921", hi:"1921"}, {en:"1922", hi:"1922"}, {en:"1925", hi:"1925"}], c: 1 },
-    { en: "In which Veda is the 'Gayatri Mantra' mentioned?", hi: "'गायत्री मंत्र' का उल्लेख किस वेद में है?", opts: [{en:"Samaveda", hi:"सामवेद"}, {en:"Yajurveda", hi:"यजुर्वेद"}, {en:"Rigveda", hi:"ऋग्वेद"}, {en:"Atharvaveda", hi:"अथर्ववेद"}], c: 2 },
-    { en: "Who was the 24th Tirthankara of Jainism?", hi: "जैन धर्म के 24वें तीर्थंकर कौन थे?", opts: [{en:"Rishabhanatha", hi:"ऋषभदेव"}, {en:"Parshvanatha", hi:"पार्श्वनाथ"}, {en:"Mahavira Swami", hi:"महावीर स्वामी"}, {en:"Arishtanemi", hi:"अरिष्टनेमि"}], c: 2 },
-    { en: "Whose ambassador was Megasthenes in Chandragupta Maurya's court?", hi: "'मेगस्थनीज' किसका राजदूत बनकर चंद्रगुप्त मौर्य के दरबार में आया था?", opts: [{en:"Alexander", hi:"सिकंदर"}, {en:"Seleucus Nicator", hi:"सेल्यूकस निकेटर"}, {en:"Darius", hi:"डेरियस"}, {en:"Ptolemy", hi:"टॉलेमी"}], c: 1 },
-    { en: "In which year was the Kalinga War fought?", hi: "प्रसिद्ध 'कलिंग युद्ध' किस वर्ष लड़ा गया था?", opts: [{en:"261 BC", hi:"261 ई.पू."}, {en:"265 BC", hi:"265 ई.पू."}, {en:"273 BC", hi:"273 ई.पू."}, {en:"250 BC", hi:"250 ई.पू."}], c: 0 },
-    { en: "Which Gupta ruler is known as the 'Napoleon of India'?", hi: "गुप्त वंश के किस शासक को 'भारत का नेपोलियन' कहा जाता है?", opts: [{en:"Chandragupta I", hi:"चंद्रगुप्त प्रथम"}, {en:"Samudragupta", hi:"समुद्रगुप्त"}, {en:"Kumaragupta", hi:"कुमारगुप्त"}, {en:"Skandagupta", hi:"स्कंदगुप्त"}], c: 1 },
-    { en: "Who founded Nalanda University?", hi: "नालंदा विश्वविद्यालय की स्थापना किसने की थी?", opts: [{en:"Dharmapala", hi:"धर्मपाल"}, {en:"Kumaragupta I", hi:"कुमारगुप्त प्रथम"}, {en:"Chandragupta II", hi:"चंद्रगुप्त द्वितीय"}, {en:"Harshavardhana", hi:"हर्षवर्द्धन"}], c: 1 },
-    { en: "In which year was the First Battle of Tarain fought?", hi: "तराइन का प्रथम युद्ध किस वर्ष लड़ा गया था?", opts: [{en:"1191", hi:"1191"}, {en:"1192", hi:"1192"}, {en:"1194", hi:"1194"}, {en:"1190", hi:"1190"}], c: 0 },
-    { en: "Who completed the construction of Qutub Minar?", hi: "कुतुबमीनार का निर्माण किसने पूरा करवाया था?", opts: [{en:"Qutb-ud-din Aibak", hi:"कुतुबुद्दीन ऐबक"}, {en:"Iltutmish", hi:"इल्तुतमिश"}, {en:"Balban", hi:"बलबन"}, {en:"Alauddin Khalji", hi:"अलाउद्दीन खिलजी"}], c: 1 },
-    { en: "Which Sultan implemented the 'Market Control Policy'?", hi: "'बाजार नियंत्रण नीति' किस सुल्तान ने लागू की थी?", opts: [{en:"Alauddin Khalji", hi:"अलाउद्दीन खिलजी"}, {en:"Balban", hi:"बलबन"}, {en:"Firuz Tughlaq", hi:"फिरोज तुगलक"}, {en:"Muhammad bin Tughlaq", hi:"मोहम्मद बिन तुगलक"}], c: 0 },
-    { en: "In which year was the Vijayanagara Empire founded?", hi: "विजयनगर साम्राज्य की स्थापना किस वर्ष हुई थी?", opts: [{en:"1320", hi:"1320"}, {en:"1336", hi:"1336"}, {en:"1347", hi:"1347"}, {en:"1351", hi:"1351"}], c: 1 },
-    { en: "Between whom was the First Battle of Panipat (1526) fought?", hi: "पानीपत की पहली लड़ाई (1526) किसके बीच लड़ी गई थी?", opts: [{en:"Babur & Ibrahim Lodi", hi:"बाबर और इब्राहिम लोदी"}, {en:"Babur & Rana Sanga", hi:"बाबर और राणा सांगा"}, {en:"Humayun & Sher Shah", hi:"हुमायूँ और शेरशाह"}, {en:"Akbar & Hemu", hi:"अकबर और हेमू"}], c: 0 },
-    { en: "Who authored 'Akbarnama'?", hi: "'अकबरनामा' की रचना किसने की थी?", opts: [{en:"Faizi", hi:"फैजी"}, {en:"Birbal", hi:"बीरबल"}, {en:"Abul Fazl", hi:"अबुल फजल"}, {en:"Bada'uni", hi:"बदायूनी"}], c: 2 },
-    { en: "Who was the founder of Sikhism?", hi: "'सिख धर्म' के संस्थापक कौन थे?", opts: [{en:"Guru Angad", hi:"गुरु अंगद"}, {en:"Guru Nanak Dev", hi:"गुरु नानक देव"}, {en:"Guru Arjan Dev", hi:"गुरु अर्जुन देव"}, {en:"Guru Gobind Singh", hi:"गुरु गोविंद सिंह"}], c: 1 },
-    { en: "In which year did the Battle of Plassey take place?", hi: "प्लासी का प्रसिद्ध युद्ध कब हुआ था?", opts: [{en:"1757", hi:"1757"}, {en:"1764", hi:"1764"}, {en:"1761", hi:"1761"}, {en:"1772", hi:"1772"}], c: 0 },
-    { en: "Who led British forces in the Battle of Buxar (1764)?", hi: "बक्सर के युद्ध (1764) में ब्रिटिश सेना का नेतृत्व किसने किया था?", opts: [{en:"Robert Clive", hi:"रॉबर्ट क्लाइव"}, {en:"Hector Munro", hi:"हेक्टर मुनरो"}, {en:"Warren Hastings", hi:"वारेन हेस्टिंग्स"}, {en:"Lord Cornwallis", hi:"लॉर्ड कार्नवालिस"}], c: 1 },
-    { en: "Who was the Governor-General of India during the 1857 Revolt?", hi: "1857 के विद्रोह के समय भारत का गवर्नर जनरल कौन था?", opts: [{en:"Lord Dalhousie", hi:"लॉर्ड डलहौजी"}, {en:"Lord Canning", hi:"लॉर्ड कैनिंग"}, {en:"Lord Ripon", hi:"लॉर्ड रिपन"}, {en:"Lord Wellesley", hi:"लॉर्ड वेलेस्ली"}], c: 1 },
-    { en: "Who wrote 'Satyarth Prakash'?", hi: "'सत्यार्थ प्रकाश' पुस्तक के लेखक कौन हैं?", opts: [{en:"Raja Ram Mohan Roy", hi:"राजा राममोहन राय"}, {en:"Swami Vivekananda", hi:"स्वामी विवेकानंद"}, {en:"Swami Dayanand Saraswati", hi:"स्वामी दयानंद सरस्वती"}, {en:"Ishwar Chandra Vidyasagar", hi:"ईश्वरचंद्र विद्यासागर"}], c: 2 },
-    { en: "In which year was the Indian National Congress founded?", hi: "भारतीय राष्ट्रीय कांग्रेस की स्थापना किस वर्ष हुई थी?", opts: [{en:"1880", hi:"1880"}, {en:"1885", hi:"1885"}, {en:"1890", hi:"1890"}, {en:"1895", hi:"1895"}], c: 1 },
-    { en: "Where is the headquarters of the Indian Army located?", hi: "भारतीय सेना का मुख्यालय कहाँ स्थित है?", opts: [{en:"New Delhi", hi:"नई दिल्ली"}, {en:"Dehradun", hi:"देहरादून"}, {en:"Pune", hi:"पुणे"}, {en:"Lucknow", hi:"लखनऊ"}], c: 0 },
-    { en: "Which Article of the Constitution guarantees Right to Equality?", hi: "संविधान का कौन सा अनुच्छेद समानता का अधिकार देता है?", opts: [{en:"Article 14", hi:"अनुच्छेद 14"}, {en:"Article 19", hi:"अनुच्छेद 19"}, {en:"Article 21", hi:"अनुच्छेद 21"}, {en:"Article 32", hi:"अनुच्छेद 32"}], c: 0 },
-    { en: "What is the chemical formula of water?", hi: "पानी का रासायनिक सूत्र क्या है?", opts: [{en:"H2O", hi:"H2O"}, {en:"CO2", hi:"CO2"}, {en:"NaCl", hi:"NaCl"}, {en:"O2", hi:"O2"}], c: 0 },
-    { en: "Which organ produces bile juice in the human body?", hi: "मानव शरीर में पित्त रस कौन सा अंग बनाता है?", opts: [{en:"Liver", hi:"यकृत (Liver)"}, {en:"Kidney", hi:"वृक्क"}, {en:"Pancreas", hi:"अग्न्याशय"}, {en:"Heart", hi:"हृदय"}], c: 0 },
-    { en: "Where is Dudhwa National Park located?", hi: "दुधवा राष्ट्रीय उद्यान कहाँ स्थित है?", opts: [{en:"Lakhimpur Kheri (UP)", hi:"लखीमपुर खीरी (उ.प्र.)"}, {en:"Kanpur", hi:"कानपुर"}, {en:"Prayagraj", hi:"प्रयागराज"}, {en:"Meerut", hi:"मेरठ"}], c: 0 },
-    { en: "In which year did the Champaran Satyagraha take place in Bihar?", hi: "बिहार में चंपारण सत्याग्रह किस वर्ष हुआ था?", opts: [{en:"1917", hi:"1917"}, {en:"1919", hi:"1919"}, {en:"1920", hi:"1920"}, {en:"1922", hi:"1922"}], c: 0 }
-  ];
-
-  function generateGSFallback(catKey, seriesNum, qNum) {
-    const pick = masterGSBank[(qNum + seriesNum * 7) % masterGSBank.length];
-    return {
-      en: `${pick.en}`,
-      hi: `${pick.hi}`,
-      options: pick.opts,
-      correct: pick.c
     };
   }
 
@@ -916,34 +981,48 @@
   }
 
   function get100Questions(catKey, seriesNum) {
-    const seriesKey = `series_${seriesNum}`;
-    let loadedList = [];
+    let rawList = [];
 
-    if (externalJsonData && externalJsonData[catKey] && externalJsonData[catKey][seriesKey]) {
-      const rawList = externalJsonData[catKey][seriesKey];
-      if (Array.isArray(rawList) && rawList.length > 0) {
-        loadedList = rawList.map((q, idx) => normalizeRawQuestion(q, idx + 1));
+    if (Array.isArray(externalJsonData)) {
+      rawList = externalJsonData;
+    } else if (externalJsonData && typeof externalJsonData === 'object') {
+      const seriesKey = `series_${seriesNum}`;
+      if (externalJsonData[catKey] && externalJsonData[catKey][seriesKey]) {
+        rawList = externalJsonData[catKey][seriesKey];
+        if (rawList.length === 100) {
+          return rawList.map((q, idx) => normalizeRawQuestion(q, idx + 1));
+        }
+      } else if (externalJsonData.questions && Array.isArray(externalJsonData.questions)) {
+        rawList = externalJsonData.questions;
       }
     }
 
-    const final100 = [...loadedList];
-    const startIndex = loadedList.length + 1;
+    if (rawList.length >= 100) {
+      const startIndex = (seriesNum - 1) * 100;
+      const endIndex = startIndex + 100;
 
-    for (let i = startIndex; i <= 100; i++) {
-      let raw;
-      if (i <= 25) {
-        raw = generateReasoningQuestion(seriesNum, i);
-      } else {
-        raw = generateGSFallback(catKey, seriesNum, i);
+      if (startIndex < rawList.length) {
+        const sliced = rawList.slice(startIndex, endIndex);
+        if (sliced.length === 100) {
+          return sliced.map((q, idx) => normalizeRawQuestion(q, idx + 1));
+        }
+        const partial = sliced.map((q, idx) => normalizeRawQuestion(q, idx + 1));
+        for (let i = partial.length + 1; i <= 100; i++) {
+          const raw = generateNonRepeatingGS(i, seriesNum);
+          partial.push(applyShift(raw, seriesNum, i));
+        }
+        return partial;
       }
+    }
+
+    const final100 = [];
+    for (let i = 1; i <= 100; i++) {
+      const raw = generateNonRepeatingGS(i, seriesNum);
       final100.push(applyShift(raw, seriesNum, i));
     }
-
     return final100;
   }
 
-  let selectedCategoryKey = "defence";
-  let selectedCategoryLabel = "Indian Army / Defence";
   let currentSeriesNum = 1;
   let testQuestions = [];
   let userResponses = {};
@@ -964,9 +1043,6 @@
   }
 
   function goToSeriesScreen() {
-    const selectElem = document.getElementById('examCategorySelect');
-    selectedCategoryKey = selectElem.value;
-    selectedCategoryLabel = selectElem.options[selectElem.selectedIndex].text;
     document.getElementById('selectedCategoryTitle').innerText = selectedCategoryLabel;
 
     const container = document.getElementById('seriesGridContainer');
@@ -975,7 +1051,7 @@
     for (let i = 1; i <= 50; i++) {
       const btn = document.createElement('button');
       btn.className = "series-btn";
-      btn.innerHTML = `Test Series ${i}<br><span style="font-size:11px; color:#64748b;">25 Reas + 75 GS</span>`;
+      btn.innerHTML = `Test Series ${i}<br><span style="font-size:11px; color:#64748b;">100 GK/GS Qs</span>`;
       btn.onclick = () => openInstructionModal(i);
       container.appendChild(btn);
     }
@@ -1046,8 +1122,7 @@
 
   function loadQuestion() {
     const q = testQuestions[currentIndex];
-    const sectionName = (currentIndex < 25) ? "Section: Reasoning (तर्कशक्ति)" : "Section: General Studies (GS/GK)";
-    document.getElementById('questionCounter').innerText = `${sectionName} | Q ${currentIndex + 1} of 100`;
+    document.getElementById('questionCounter').innerText = `Section: General Knowledge & GS | Q ${currentIndex + 1} of 100`;
     
     if (q.en && q.en !== q.hi) {
       document.getElementById('qTextEn').style.display = 'block';
