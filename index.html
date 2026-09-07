@@ -40,6 +40,7 @@
       display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 14px; cursor: pointer; transition: all 0.2s ease; text-align: left;
     }
     .exam-card:hover { border-color: #3b82f6; background: #eff6ff; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12); }
+    .exam-card:active { transform: translateY(0); }
     .exam-card-content { display: flex; align-items: center; gap: 14px; }
     .exam-icon { font-size: 26px; min-width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-radius: 12px; }
     .exam-title { font-size: 15px; font-weight: 700; color: #1e293b; }
@@ -55,7 +56,7 @@
     .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25); }
     .social-banner { display: flex; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px dashed #cbd5e1; }
     .social-btn {
-      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; border-radius: 10px; text-decoration: none; font-size: 13.5px; font-weight: 600; color: #fff;
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; border-radius: 10px; text-decoration: none; font-size: 13.5px; font-weight: 600; color: #fff; cursor: pointer;
     }
     .yt-btn { background: linear-gradient(135deg, #ff0000, #cc0000); }
     .tg-btn { background: linear-gradient(135deg, #0088cc, #006699); }
@@ -115,8 +116,8 @@
     <p>Target your dream government job with India's best free 100-question GK/GS CBT mock tests!</p>
     <button class="btn" onclick="showScreen('loginScreen')">Sign In to Continue</button>
     <div class="social-banner">
-      <a href="http://www.youtube.com/@students_adda_1" target="_blank" class="social-btn yt-btn">YouTube Channel</a>
-      <a href="https://t.me/studentquiz1" target="_blank" class="social-btn tg-btn">Telegram Group</a>
+      <a href="vnd.youtube://www.youtube.com/@students_adda_1" onclick="openAppFallback('vnd.youtube://www.youtube.com/@students_adda_1', 'https://www.youtube.com/@students_adda_1', event)" class="social-btn yt-btn">YouTube Channel</a>
+      <a href="tg://resolve?domain=studentquiz1" onclick="openAppFallback('tg://resolve?domain=studentquiz1', 'https://t.me/studentquiz1', event)" class="social-btn tg-btn">Telegram Group</a>
     </div>
     <div class="creator-footer">Portal <span>Created by AYUSH</span></div>
   </div>
@@ -228,8 +229,8 @@
     </div>
 
     <div class="social-banner">
-      <a href="http://www.youtube.com/@students_adda_1" target="_blank" class="social-btn yt-btn">YouTube</a>
-      <a href="https://t.me/studentquiz1" target="_blank" class="social-btn tg-btn">Join Telegram</a>
+      <a href="vnd.youtube://www.youtube.com/@students_adda_1" onclick="openAppFallback('vnd.youtube://www.youtube.com/@students_adda_1', 'https://www.youtube.com/@students_adda_1', event)" class="social-btn yt-btn">YouTube</a>
+      <a href="tg://resolve?domain=studentquiz1" onclick="openAppFallback('tg://resolve?domain=studentquiz1', 'https://t.me/studentquiz1', event)" class="social-btn tg-btn">Join Telegram</a>
     </div>
     <div class="creator-footer">Created by AYUSH</div>
   </div>
@@ -334,6 +335,19 @@
   }
   loadQuestionsFromJSON();
 
+  function openAppFallback(appUrl, webUrl, e) {
+    if (e) e.preventDefault();
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = appUrl;
+      setTimeout(() => {
+        window.location.href = webUrl;
+      }, 1200);
+    } else {
+      window.open(webUrl, '_blank');
+    }
+  }
+
   function isValidMobile(phone) { return /^[6-9]\d{9}$/.test(phone); }
 
   function signupUser() {
@@ -417,7 +431,7 @@
     return { num: idx, en: text, hi: text, options: opts, correct: correctIdx };
   }
 
-  // 100% NON-REPEATING DYNAMIC GENERATOR (Har series me naye 100 sawal)
+  // 100% Non-Repeating Procedural Bank Generator (25 Series x 100 Questions = 2500 Unique Questions)
   function createUniqueQuestion(seriesNum, qNum, catKey) {
     const seed = (seriesNum * 100) + qNum;
     
@@ -455,7 +469,7 @@
         correct: 0
       };
     }
-    // Topic 3: General Science - Physics, Chemistry, Bio (51-75)
+    // Topic 3: General Science (51-75)
     else if (qNum <= 75) {
       const scienceBank = [
         { q: "मानव शरीर की सबसे बड़ी ग्रंथि कौन सी है?", a: "यकृत (Liver)", w: ["अग्न्याशय", "थायरॉयड", "पीयूष"] },
@@ -480,7 +494,7 @@
         correct: 0
       };
     }
-    // Topic 4: Indian Geography & River Dams (76-100)
+    // Topic 4: Geography (76-100)
     else {
       const geoBank = [
         { q: "विश्व की सबसे ऊंची पर्वत चोटी माउंट एवरेस्ट किस देश में है?", a: "नेपाल", w: ["भारत", "चीन", "भूटान"] },
@@ -507,18 +521,30 @@
     }
   }
 
-  // 100 QUESTIONS CHUNKING ENGINE (Never repeats inside any Series)
+  // Dual-Mode Loader (JSON Filter + Category Offset + Fallback)
   function get100Questions(catKey, seriesNum) {
     let rawList = [];
 
     if (Array.isArray(externalJsonData)) {
-      rawList = externalJsonData;
+      // Step A: Check if questions have category/exam property
+      const matched = externalJsonData.filter(q => {
+        const tag = (q.category || q.exam || "").toLowerCase();
+        return tag.includes(catKey.toLowerCase());
+      });
+
+      if (matched.length >= 100) {
+        rawList = matched;
+      } else {
+        rawList = externalJsonData;
+      }
     } else if (externalJsonData && typeof externalJsonData === 'object') {
       const seriesKey = `series_${seriesNum}`;
       if (externalJsonData[catKey] && externalJsonData[catKey][seriesKey]) {
         rawList = externalJsonData[catKey][seriesKey];
         if (rawList.length === 100) return rawList.map((q, idx) => normalizeRawQuestion(q, idx + 1));
-      } else if (externalJsonData.questions && Array.isArray(externalJsonData.questions)) {
+      } else if (Array.isArray(externalJsonData[catKey])) {
+        rawList = externalJsonData[catKey];
+      } else if (Array.isArray(externalJsonData.questions)) {
         rawList = externalJsonData.questions;
       }
     }
@@ -528,7 +554,6 @@
     const startIndex = baseOffset + ((seriesNum - 1) * 100);
     const endIndex = startIndex + 100;
 
-    // Agar JSON file me 100 questions milte hain to unhe serve karein
     if (rawList.length >= endIndex) {
       const sliced = rawList.slice(startIndex, endIndex);
       if (sliced.length === 100) {
@@ -536,7 +561,7 @@
       }
     }
 
-    // Dynamic Guarantee: 100 Unique Non-Repeating questions for Series 1 to 25
+    // 100 Unique Questions Backup for Series 1 to 25
     const dynamic100 = [];
     for (let i = 1; i <= 100; i++) {
       const qObj = createUniqueQuestion(seriesNum, i, catKey);
